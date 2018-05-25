@@ -1,4 +1,4 @@
-package kr.saintdev.mna_staff;
+package kr.saintdev.mnastaff;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

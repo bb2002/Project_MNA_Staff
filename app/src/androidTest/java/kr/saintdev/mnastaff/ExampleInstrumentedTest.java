@@ -1,4 +1,4 @@
-package kr.saintdev.mna_staff;
+package kr.saintdev.mnastaff;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
