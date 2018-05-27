@@ -13,4 +13,8 @@ public interface InternetConst {
     int HTTP_INTERNAL_SERVER_ERROR = 500;
 
     String SERVER_HOST = "http://saintdev.kr/mna/staff/";
+
+    String CREATE_ACCOUNT = SERVER_HOST + "account/join.php";
+    String AUTO_LOGIN_ACCOUNT = SERVER_HOST + "account/auto-login.php";
+    String CHECK_VALID_ADMIN_ID = SERVER_HOST + "account/valid-admin.php";
 }

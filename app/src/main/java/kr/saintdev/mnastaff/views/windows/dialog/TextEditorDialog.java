@@ -24,6 +24,8 @@ public class TextEditorDialog extends Dialog {
     Button okButton = null;
     String data = null;
 
+    Object tag = null;
+
     public TextEditorDialog(@NonNull Context context, String defaultValue) {
         super(context);
 
@@ -42,6 +44,14 @@ public class TextEditorDialog extends Dialog {
 
     public String getData() {
         return this.data;
+    }
+
+    public void setTag(Object tag) {
+        this.tag = tag;
+    }
+
+    public Object getTag() {
+        return tag;
     }
 
     class OnButtonClickHandler implements View.OnClickListener {

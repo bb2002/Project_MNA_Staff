@@ -1,4 +1,4 @@
-package kr.saintdev.mnastaff.models.datas.profile.kakao;
+package kr.saintdev.mnastaff.models.components.kakao;
 
 import android.content.Context;
 

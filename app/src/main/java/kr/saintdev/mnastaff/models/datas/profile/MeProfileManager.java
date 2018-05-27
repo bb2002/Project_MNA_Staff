@@ -33,7 +33,7 @@ public class MeProfileManager {
     }
 
     public MeProfile getProfile() {
-        String sql = "SELECT * FROM mna_admin_profile ORDER BY _id DESC";
+        String sql = "SELECT * FROM mna_staff_profile ORDER BY _id DESC";
         Cursor cs = dbHelper.sendReadableQuery(sql);
 
         if(cs.moveToNext()) {
@@ -41,8 +41,7 @@ public class MeProfileManager {
                     cs.getString(1),
                     cs.getString(2),
                     cs.getString(3),
-                    cs.getString(4),
-                    cs.getString(5),
+                    cs.getString(4)
             };
 
             for(String d : datas) {
@@ -63,7 +62,7 @@ public class MeProfileManager {
         if(getProfile() == null) {
             sql = "INSERT INTO mna_staff_profile (stf_kakao_id, stf_kakao_nick, stf_kakao_profile_icon, stf_mna_uuid) VALUES(?,?,?,?)";
         } else {
-            sql = "UPDATE mna_admin_profile SET adm_kakao_id = ?, adm_kakao_nick = ?, adm_kakao_profile_icon = ?, adm_mna_uuid = ? WHERE 1";
+            sql = "UPDATE mna_staff_profile SET stf_kakao_id = ?, stf_kakao_nick = ?, stf_kakao_profile_icon = ?, stf_mna_uuid = ? WHERE 1";
         }
 
         SQLiteDatabase db = dbHelper.getWriteDB();
