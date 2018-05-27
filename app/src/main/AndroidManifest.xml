@@ -22,6 +22,9 @@
         <activity android:name=".views.activitys.MainActivity"
             android:enabled="true" />
 
+        <activity android:name=".views.activitys.WaitActivity"
+            android:enabled="true" />
+
         <meta-data android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
     </application>

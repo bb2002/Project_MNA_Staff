@@ -31,6 +31,7 @@ import kr.saintdev.mnastaff.models.tasks.http.HttpRequester;
 import kr.saintdev.mnastaff.models.tasks.http.HttpResponseObject;
 import kr.saintdev.mnastaff.views.activitys.AuthActivity;
 import kr.saintdev.mnastaff.views.activitys.MainActivity;
+import kr.saintdev.mnastaff.views.activitys.WaitActivity;
 import kr.saintdev.mnastaff.views.fragments.SuperFragment;
 import kr.saintdev.mnastaff.views.windows.dialog.DialogManager;
 import kr.saintdev.mnastaff.views.windows.dialog.TextEditorDialog;
@@ -176,8 +177,16 @@ public class LoadingFragment extends SuperFragment {
                                 Toast.makeText(control, "Can not update account", Toast.LENGTH_SHORT).show();
                             }
 
-                            // MainActivity 를 실행합니다.
-                            gotoMainActivity();
+                            // 이 계정이 승인된 계정인지 확인합ㄴ디ㅏ
+                            if(!body.getBoolean("grant")) {
+                                // WaitActivity 를 실행합니다.
+                                Intent waitActivity = new Intent(getActivity(), WaitActivity.class);
+                                startActivity(waitActivity);
+
+                                getActivity().finish();
+                            } else {
+                                gotoMainActivity();
+                            }
                         }
                     } else if(requestCode == REQUEST_VAILD_ADMIN) {
                         JSONObject body = httpResp.getBody();

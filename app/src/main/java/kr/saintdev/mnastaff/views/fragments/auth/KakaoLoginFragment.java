@@ -17,6 +17,7 @@ import com.kakao.auth.Session;
 import com.kakao.util.exception.KakaoException;
 
 import kr.saintdev.mnastaff.R;
+import kr.saintdev.mnastaff.models.components.lib.DebugOnly;
 import kr.saintdev.mnastaff.views.activitys.AuthActivity;
 import kr.saintdev.mnastaff.views.fragments.SuperFragment;
 import kr.saintdev.mnastaff.views.windows.dialog.DialogManager;
@@ -52,6 +53,8 @@ public class KakaoLoginFragment extends SuperFragment {
 
         this.dm = new DialogManager(control);
         this.dm.setOnYesButtonClickListener(new OnDialogCloseHandler(), "OK");
+
+        DebugOnly.getHashKey(control);
 
         return v;
     }
