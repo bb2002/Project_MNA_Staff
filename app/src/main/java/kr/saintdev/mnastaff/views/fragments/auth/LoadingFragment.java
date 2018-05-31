@@ -180,10 +180,7 @@ public class LoadingFragment extends SuperFragment {
                             // 이 계정이 승인된 계정인지 확인합ㄴ디ㅏ
                             if(!body.getBoolean("grant")) {
                                 // WaitActivity 를 실행합니다.
-                                Intent waitActivity = new Intent(getActivity(), WaitActivity.class);
-                                startActivity(waitActivity);
-
-                                getActivity().finish();
+                                gotoWaitActivity();
                             } else {
                                 gotoMainActivity();
                             }
@@ -264,7 +261,7 @@ public class LoadingFragment extends SuperFragment {
 
             // 첫 사용자 입니다.
             // 여기서 첫 사용자에게 할 행위를 기입합니다
-            gotoMainActivity();
+            gotoWaitActivity();
         }
     }
 
@@ -286,7 +283,17 @@ public class LoadingFragment extends SuperFragment {
             }
         });
         handler.sendEmptyMessageDelayed(0, 1000);
+    }
 
-
+    private void gotoWaitActivity() {
+        Handler handler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                startActivity(new Intent(control, WaitActivity.class));
+                control.finish();
+                return true;
+            }
+        });
+        handler.sendEmptyMessageDelayed(0, 1000);
     }
 }

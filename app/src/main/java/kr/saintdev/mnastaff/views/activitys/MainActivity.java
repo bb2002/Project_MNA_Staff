@@ -15,6 +15,9 @@ import kr.saintdev.mnastaff.R;
 import kr.saintdev.mnastaff.views.adapters.MainActivityAdapter;
 import kr.saintdev.mnastaff.views.fragments.SuperFragment;
 import kr.saintdev.mnastaff.views.fragments.main.HomeFragment;
+import kr.saintdev.mnastaff.views.fragments.main.RequestJoinFragment;
+import kr.saintdev.mnastaff.views.fragments.main.SettingsFragment;
+import kr.saintdev.mnastaff.views.fragments.main.WorklogFragment;
 
 public class MainActivity extends AppCompatActivity {
     ViewPager contentPager = null;
@@ -37,12 +40,9 @@ public class MainActivity extends AppCompatActivity {
         // Fragment 를 생성합니다.
         SuperFragment[] fragments = new SuperFragment[] {
                 new HomeFragment(),
-//                new WorkLogFragment(),
-//                new RequestJoinFragment(),
-//                new SettingsFragment()
-                new HomeFragment(),
-                new HomeFragment(),
-                new HomeFragment(),
+                new WorklogFragment(),
+                new RequestJoinFragment(),
+                new SettingsFragment()
         };
 
         // adapter 을 생성합니다.
