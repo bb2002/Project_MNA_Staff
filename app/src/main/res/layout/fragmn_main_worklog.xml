@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/main_worklog_header"
+        android:layout_margin="16dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/main_worklog_header_workspace"
+            android:text="로딩 중..."
+            android:textSize="18sp"
+            android:textColor="@color/colorWhite"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/main_worklog_header_name"
+            android:textColor="@color/colorWhite"
+            android:layout_alignBaseline="@id/main_worklog_header_workspace"
+            android:layout_toRightOf="@id/main_worklog_header_workspace"
+            android:layout_marginLeft="16dp"
+            android:text="로딩 중..."
+            android:textStyle="bold"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <!-- 근무시간 구역을 선택할 수 있는 Button -->
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:id="@+id/main_worklog_section"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/main_worklog_header"
+        android:layout_marginRight="16dp"
+        android:text="날짜 선택"
+        android:textSize="12sp"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
+        android:background="@color/colorWhite"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/main_worklog_container"
+        android:orientation="vertical"
+        android:layout_below="@id/main_worklog_section"
+        android:padding="24dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorWhite">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/main_worklog_section_1"
+                android:text="선택한 기간에 총 근무한 시간"
+                android:textStyle="bold"
+                android:textSize="12sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/main_worklog_section_time"
+                android:layout_alignBaseline="@id/main_worklog_section_1"
+                android:layout_alignParentRight="true"
+                android:text="로딩 중..."
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/main_worklog_listview"
+            android:layout_marginTop="16dp" />
+    </LinearLayout>
+
+</RelativeLayout>
