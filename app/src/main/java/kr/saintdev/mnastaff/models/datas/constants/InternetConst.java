@@ -19,4 +19,6 @@ public interface InternetConst {
     String CHECK_VALID_ADMIN_ID = SERVER_HOST + "account/valid-admin.php";
 
     String MY_WORKSPACE_STATUS = SERVER_HOST + "work/my-workspace.php";
+    String COMMUTE_ME = SERVER_HOST + "work/commute.php";
+    String MY_WORKLOG = SERVER_HOST + "work/my-worklog.php";
 }
