@@ -1,5 +1,6 @@
 package kr.saintdev.mnastaff.views.fragments.main;
 
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,18 +9,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Locale;
 
 import kr.saintdev.mnastaff.R;
 import kr.saintdev.mnastaff.models.datas.constants.InternetConst;
 import kr.saintdev.mnastaff.models.datas.objects.WorklogObject;
+import kr.saintdev.mnastaff.models.datas.profile.MeProfileManager;
 import kr.saintdev.mnastaff.models.tasks.BackgroundWork;
 import kr.saintdev.mnastaff.models.tasks.OnBackgroundWorkListener;
 import kr.saintdev.mnastaff.models.tasks.http.HttpRequester;
@@ -28,6 +34,7 @@ import kr.saintdev.mnastaff.views.activitys.MainActivity;
 import kr.saintdev.mnastaff.views.adapters.WorklogAdapter;
 import kr.saintdev.mnastaff.views.fragments.SuperFragment;
 import kr.saintdev.mnastaff.views.windows.dialog.DialogManager;
+import kr.saintdev.mnastaff.views.windows.dialog.YearMonthPicker;
 import kr.saintdev.mnastaff.views.windows.dialog.clicklistener.OnYesClickListener;
 import kr.saintdev.mnastaff.views.windows.progress.ProgressManager;
 
@@ -55,6 +62,7 @@ public class WorklogFragment extends SuperFragment {
     ProgressManager pm = null;
 
     private static final int REQUEST_WORK_LOG = 0x0;
+    private static final int REQUEST_WORKSPACE_STATUS = 0x1;
 
     @Nullable
     @Override
@@ -83,6 +91,14 @@ public class WorklogFragment extends SuperFragment {
         }, "OK");
         this.pm = new ProgressManager(control);
 
+        this.selectDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                YearMonthPicker picker = new YearMonthPicker(control, new OnDateSelectedHandler());
+                picker.show();
+            }
+        });
+
         updateWorklog();
 
         return v;
@@ -95,8 +111,34 @@ public class WorklogFragment extends SuperFragment {
         HttpRequester requester =
                 new HttpRequester(InternetConst.MY_WORKLOG, null, REQUEST_WORK_LOG, backgroundHandler, control);
         requester.execute();
+
+        HttpRequester reqMyWorkspace =
+                new HttpRequester(InternetConst.MY_WORKSPACE_STATUS, null, REQUEST_WORKSPACE_STATUS, backgroundHandler, control);
+        reqMyWorkspace.execute();
     }
 
+    /**
+     * 날짜가 선택되었습니다!
+     */
+    class OnDateSelectedHandler implements DatePickerDialog.OnDateSetListener {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            String filterdText = String.format(Locale.KOREA, "%04d-%02d", year, month);
+
+            HashMap<String, Object> args = new HashMap<>();
+            args.put("filter", filterdText);
+
+            HttpRequester requester =
+                    new HttpRequester(InternetConst.MY_WORKLOG, args, REQUEST_WORK_LOG, backgroundHandler, control);
+            requester.execute();
+
+            selectDate.setText(filterdText);
+        }
+    }
+
+    /**
+     * 백그라운드 테스크
+     */
     class OnBackgroundWorkHandler implements OnBackgroundWorkListener {
         @Override
         public void onSuccess(int requestCode, BackgroundWork worker) {
@@ -107,6 +149,7 @@ public class WorklogFragment extends SuperFragment {
                     if (requestCode == REQUEST_WORK_LOG) {
                         // 근무 로그를 불러왔습니다.
                         JSONObject body = respObj.getBody();
+                        adapter.clear();
 
                         int length = body.getInt("length");
                         JSONArray datas = body.getJSONArray("datas");
@@ -114,10 +157,12 @@ public class WorklogFragment extends SuperFragment {
                         if(length == 0) {
                             worklogContainer.setVisibility(View.GONE);
                             worklogEmptyView.setVisibility(View.VISIBLE);
+                            totalWorkTime.setText("0 분");
                         } else {
                             worklogContainer.setVisibility(View.VISIBLE);
                             worklogEmptyView.setVisibility(View.GONE);
 
+                            int totalWork = 0;
                             for(int i = 0; i < datas.length(); i ++) {
                                 JSONObject worklog = datas.getJSONObject(i);
 
@@ -132,11 +177,27 @@ public class WorklogFragment extends SuperFragment {
                                         worklog.getString("staff-status").equals("working")
                                 );
 
+                                if(!worklog.isNull("staff-admit-time")) {
+                                    // 인정된 시간이 있다면
+                                    totalWork += worklog.getInt("staff-admit-time");
+                                }
+
                                 adapter.addItem(obj);
                             }
+
+                            totalWorkTime.setText(String.valueOf(totalWork) + " 분");
                         }
 
                         adapter.notifyDataSetChanged();
+                    } else if(requestCode == REQUEST_WORKSPACE_STATUS) {
+                        // 근무지 상태를 불러왔습니다.
+                        JSONObject body = respObj.getBody();
+
+                        String workspaceName = body.getString("workspace-name");
+                        String nickname = MeProfileManager.getInstance(getContext()).getProfile().getKakaoNick();
+
+                        workspaceNameView.setText(workspaceName);
+                        staffNameView.setText(nickname);
                     }
                 } else {
                     dm.setTitle("An error occurred");

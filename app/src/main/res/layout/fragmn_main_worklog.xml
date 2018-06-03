@@ -87,7 +87,7 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:text="근무 기록이 없습니다."
-        android:textColor="#333333"
+        android:textColor="#ffffff"
         android:visibility="gone"/>
 
 </RelativeLayout>
