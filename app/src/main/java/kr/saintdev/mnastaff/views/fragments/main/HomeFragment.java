@@ -50,6 +50,8 @@ public class HomeFragment extends SuperFragment {
     private static final int REQUEST_GOTO_WORK = 0x1;       // 출근 요청
     private static final int REQUEST_GOTO_HOME = 0x2;       // 퇴근 요청
 
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

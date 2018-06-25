@@ -1,11 +1,7 @@
 package kr.saintdev.mnastaff.views.activitys;
 
-import android.content.Intent;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,8 +10,8 @@ import android.widget.ImageButton;
 import kr.saintdev.mnastaff.R;
 import kr.saintdev.mnastaff.views.adapters.MainActivityAdapter;
 import kr.saintdev.mnastaff.views.fragments.SuperFragment;
+import kr.saintdev.mnastaff.views.fragments.main.AlarmFragment;
 import kr.saintdev.mnastaff.views.fragments.main.HomeFragment;
-import kr.saintdev.mnastaff.views.fragments.main.RequestJoinFragment;
 import kr.saintdev.mnastaff.views.fragments.main.SettingsFragment;
 import kr.saintdev.mnastaff.views.fragments.main.WorklogFragment;
 
@@ -41,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         SuperFragment[] fragments = new SuperFragment[] {
                 new HomeFragment(),
                 new WorklogFragment(),
-                new RequestJoinFragment(),
+                new AlarmFragment(),
                 new SettingsFragment()
         };
 

@@ -21,4 +21,6 @@ public interface InternetConst {
     String MY_WORKSPACE_STATUS = SERVER_HOST + "work/my-workspace.php";
     String COMMUTE_ME = SERVER_HOST + "work/commute.php";
     String MY_WORKLOG = SERVER_HOST + "work/my-worklog.php";
+
+    String ALARM_MY_ALARMS = SERVER_HOST + "alarm/my-alarm.php";
 }
