@@ -23,4 +23,5 @@ public interface InternetConst {
     String MY_WORKLOG = SERVER_HOST + "work/my-worklog.php";
 
     String ALARM_MY_ALARMS = SERVER_HOST + "alarm/my-alarm.php";
+    String DELETE_ALARM = "http://saintdev.kr/mna/admin/alarm/delete-alarm.php";
 }

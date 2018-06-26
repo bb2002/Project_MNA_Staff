@@ -14,13 +14,11 @@ import kr.saintdev.mnastaff.models.tasks.BackgroundWork
 import kr.saintdev.mnastaff.models.tasks.OnBackgroundWorkListener
 import kr.saintdev.mnastaff.models.tasks.http.HttpRequester
 import kr.saintdev.mnastaff.models.tasks.http.HttpResponseObject
-import kr.saintdev.mnastaff.views.activitys.MainActivity
 import kr.saintdev.mnastaff.views.adapters.AlarmAdapter
 import kr.saintdev.mnastaff.views.fragments.SuperFragment
 import kr.saintdev.mnastaff.views.windows.dialog.DialogManager
 import kr.saintdev.mnastaff.views.windows.dialog.clicklistener.OnYesClickListener
-import org.json.JSONObject
-import java.lang.Exception
+
 
 /**
  * Copyright (c) 2015-2018 Saint software All rights reserved.
@@ -28,6 +26,7 @@ import java.lang.Exception
  */
 class AlarmFragment : SuperFragment() {
     private val REQUEST_MY_ALARM = 0x0
+    private val REQUEST_DELETE_ALARM = 0x1
 
     var alarmList: ListView? = null
     var alarmEmptyView: TextView? = null
@@ -42,8 +41,9 @@ class AlarmFragment : SuperFragment() {
         this.dm = DialogManager(activity)
 
         this.alarmList?.adapter = this.alarmAdapter
+        this.alarmAdapter.setDeleteClickHandler(OnDeleteClickListener())
 
-        return view;
+        return view
     }
 
     override fun onResume() {
@@ -54,44 +54,15 @@ class AlarmFragment : SuperFragment() {
     inner class OnBackgroundCallback : OnBackgroundWorkListener, OnYesClickListener {
         override fun onSuccess(requestCode: Int, worker: BackgroundWork<*>?) {
             try {
-                if (requestCode == REQUEST_MY_ALARM) {
-                    // 알림 요청을 받았습니다.
-                    val response = worker?.result
-                    if (response is HttpResponseObject) {
-                        if (response.isErrorOccurred) {
-                            dm?.setTitle("An error occurred!")
-                            dm?.setDescription("알림 목록을 불러올 수 없습니다.\n${response.errorMessage}")
-                            dm?.setOnYesButtonClickListener(this, "OK")
-                            dm?.show()
-                        } else {
-                            val body = response.body
+                val response = worker?.result
 
-                            if (body.getInt("length") == 0) {
-                                // 아무 알림도 없습니다.
-                                setAlarmEmptyView(true)
-                            } else {
-                                setAlarmEmptyView(false)
-                                // 알림을 보여줍니다.
-                                val myAlarmArray = body.getJSONArray("alarms")
-
-                                for (i in 0..myAlarmArray.length()-1) {
-                                    val jsonObj = myAlarmArray.getJSONObject(i)
-
-                                    alarmAdapter.addAlarmItem(AlarmObject(
-                                            jsonObj.getInt("_id"),
-                                            jsonObj.getString("alarm-title"),
-                                            jsonObj.getString("alarm-content"),
-                                            jsonObj.getString("alarm-target-uuid"),
-                                            jsonObj.getString("alarm-sender-uuid"),
-                                            jsonObj.getString("alarm-type"),
-                                            jsonObj.getString("created")
-                                    ))
-                                }
-
-                                alarmAdapter.notifyDataSetChanged()
-                            }
-                        }
-                    }
+                when(requestCode) {
+                    REQUEST_MY_ALARM->updateAlarmArray(
+                            if (response is HttpResponseObject)
+                                response
+                            else
+                                throw Exception("Casting error!"))           //
+                    REQUEST_DELETE_ALARM->updateAlarm()
                 }
             } catch(ex: Exception) {
                 onFailed(requestCode, ex)
@@ -107,6 +78,61 @@ class AlarmFragment : SuperFragment() {
 
         override fun onClick(dialog: DialogInterface?) {
             dialog?.dismiss()
+        }
+
+        private fun updateAlarmArray(response: HttpResponseObject) {
+            if (response.isErrorOccurred) {
+                dm?.setTitle("An error occurred!")
+                dm?.setDescription("알림 목록을 불러올 수 없습니다.\n${response.errorMessage}")
+                dm?.setOnYesButtonClickListener(this, "OK")
+                dm?.show()
+            } else {
+                val body = response.body
+
+                if (body.getInt("length") == 0) {
+                    // 아무 알림도 없습니다.
+                    setAlarmEmptyView(true)
+                } else {
+                    setAlarmEmptyView(false)
+                    // 알림을 보여줍니다.
+                    val myAlarmArray = body.getJSONArray("alarms")
+
+                    for (i in 0..myAlarmArray.length()-1) {
+                        val jsonObj = myAlarmArray.getJSONObject(i)
+
+                        alarmAdapter.addAlarmItem(AlarmObject(
+                                jsonObj.getInt("_id"),
+                                jsonObj.getString("alarm-title"),
+                                jsonObj.getString("alarm-content"),
+                                jsonObj.getString("alarm-target-uuid"),
+                                jsonObj.getString("alarm-sender-uuid"),
+                                jsonObj.getString("alarm-type"),
+                                jsonObj.getString("created")
+                        ))
+                    }
+                }
+
+                alarmAdapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    inner class OnDeleteClickListener : View.OnClickListener {
+        override fun onClick(v: View) {
+
+            val alarmObj = v.tag
+            if(alarmObj is AlarmObject) {
+                val args: HashMap<String, Any> = hashMapOf("alarm-id" to alarmObj.alarmId)
+
+                val requester = HttpRequester(
+                        InternetConst.DELETE_ALARM,
+                        args,
+                        REQUEST_DELETE_ALARM,
+                        OnBackgroundCallback(),
+                        context
+                )
+                requester.execute()
+            }
         }
     }
 
