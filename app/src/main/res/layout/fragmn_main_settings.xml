@@ -79,7 +79,20 @@
             android:layout_height="wrap_content"
             android:id="@+id/main_settings_logout"
             android:text="로그 아웃"
-            android:layout_margin="32dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/rect_primary_slice"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/main_settings_gone"
+            android:text="회원탈퇴"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/colorRed"
+            android:textColor="@color/colorWhite"/>
     </LinearLayout>
 </RelativeLayout>
