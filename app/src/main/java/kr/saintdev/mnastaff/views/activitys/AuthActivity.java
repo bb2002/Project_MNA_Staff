@@ -1,12 +1,19 @@
 package kr.saintdev.mnastaff.views.activitys;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
+import android.util.Log;
+
+import java.security.MessageDigest;
 
 import kr.saintdev.mnastaff.R;
 import kr.saintdev.mnastaff.views.fragments.SuperFragment;

@@ -4,15 +4,14 @@ package kr.saintdev.mnastaff.models.datas.constants;
  * Copyright (c) 2015-2018 Saint software All rights reserved.
  *
  * @Date 2018-05-16
+ * @UPDATE 2018-11-06 END POINT UPDATED.
  */
 
 public interface InternetConst {
     int HTTP_OK = 200;
     int HTTP_AUTH_ERROR = 400;
-    int HTTP_CLIENT_REQUEST_ERROR = 401;
-    int HTTP_INTERNAL_SERVER_ERROR = 500;
 
-    String SERVER_HOST = "http://saintdev.kr/mna/staff/";
+    String SERVER_HOST = "http://api.saintdev.kr/~mna/staff/";
 
     String CREATE_ACCOUNT = SERVER_HOST + "account/join.php";
     String AUTO_LOGIN_ACCOUNT = SERVER_HOST + "account/auto-login.php";
@@ -24,5 +23,5 @@ public interface InternetConst {
     String MY_WORKLOG = SERVER_HOST + "work/my-worklog.php";
 
     String ALARM_MY_ALARMS = SERVER_HOST + "alarm/my-alarm.php";
-    String DELETE_ALARM = "http://saintdev.kr/mna/admin/alarm/delete-alarm.php";
+    String DELETE_ALARM = "http://api.saintdev.kr/~mna/admin/alarm/delete-alarm.php";
 }
